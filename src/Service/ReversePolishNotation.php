@@ -26,43 +26,45 @@ final class ReversePolishNotation
                 
                 $stack[] = (float) $token;
                 continue;
-            } else {
-                $right = array_pop($stack);
-                $left = array_pop($stack);
+            }
 
-                if ('+' === $token) {
-                    $result = $left + $right;
-                    $stack[] = $result;
-                } elseif ('-' === $token) {
-                    $result = $left - $right;
-                    $stack[] = $result;
-                } elseif ('*' === $token) {
-                    $result = $left * $right;
-                    $stack[] = $result;
-                } elseif ('/' === $token) {
+            $right = array_pop($stack);
+            $left = array_pop($stack);
+
+            switch ($token) {
+                case '+':
+                    $stack[] = $left + $right;
+                    break;
+                case '-':
+                    $stack[] = $left - $right;
+                    break;
+                case '*':
+                    $stack[] = $left * $right;
+                    break;
+                case '/':
                     if (0 == $right) {
                         throw new InvalidArgumentException('Division by zero.');
                     }
-                    $result = $left / $right;
-                    $stack[] = $result;
-                } elseif ('^' === $token) {
-                    $result = $left ** $right;
-                    $stack[] = $result;
-                } elseif (('!' === $token)) {
+                    $stack[] = $left / $right;
+                    break;
+                case '^':
+                    $stack[] = $left ** $right;
+                    break;
+                case '!':
                     $factorial = 1;
                     for ($i = 1; $i <= (int)$right; $i++) {
                         $factorial *= $i;
                     }
                     $stack[] = (float)$factorial;
-                } elseif ('mod' === $token) {
+                    break;
+                case 'mod':
                     if (0 == $right) {
                         throw new InvalidArgumentException('Division by zero.');
                     }
-                    $result = $left % $right;
-                    $stack[] = $result;
-                } else {
+                    $stack[] = $left % $right;
+                    break;
+                default:
                     throw new InvalidArgumentException(sprintf('Unknown operator: %s', $token));
-                }
             }
         }
 
