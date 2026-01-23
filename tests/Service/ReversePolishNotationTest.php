@@ -98,4 +98,11 @@ final class ReversePolishNotationTest extends TestCase
 
         $service->evaluate('1 2 foo');
     }
+
+    public function testMultipleOperators(): void
+    {
+        $service = new ReversePolishNotation();
+
+        self::assertSame(14.0, $service->evaluate('5 1 2 + 4 * + 3 -'));
+    }
 }
