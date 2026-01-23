@@ -100,6 +100,45 @@
         return;
       }
 
+      const expressionInput = form.querySelector('input[name="expression"]');
+
+      const renderState = (state) => {
+        if (!state) {
+          return;
+        }
+
+        if (expressionInput && typeof state.expression === 'string') {
+          expressionInput.value = state.expression;
+        }
+
+        if (state.hasResult) {
+          resultBox.textContent = state.message || 'No result returned.';
+          if (state.isError) {
+            resultBox.classList.add('error');
+          } else {
+            resultBox.classList.remove('error');
+          }
+          resultBox.hidden = false;
+        } else {
+          resultBox.hidden = true;
+          resultBox.classList.remove('error');
+          resultBox.textContent = '';
+        }
+      };
+
+      const initialState = {
+        expression: expressionInput ? expressionInput.value : '',
+        hasResult: false,
+        message: '',
+        isError: false
+      };
+
+      history.replaceState(initialState, '');
+
+      window.addEventListener('popstate', (event) => {
+        renderState(event.state);
+      });
+
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         resultBox.hidden = true;
@@ -122,17 +161,42 @@
 
           const payload = await response.json();
 
+          let message = '';
+          let isError = false;
+
           if (payload.error) {
-            resultBox.textContent = `Error: ${payload.error}`;
+            message = `Error: ${payload.error}`;
+            isError = true;
             resultBox.classList.add('error');
           } else if (payload.result !== null && payload.result !== undefined) {
-            resultBox.textContent = `Result: ${payload.result}`;
+            message = `Result: ${payload.result}`;
           } else {
-            resultBox.textContent = 'No result returned.';
+            message = 'No result returned.';
           }
+
+          resultBox.textContent = message;
+
+          history.pushState(
+            {
+              expression: expressionInput ? expressionInput.value : '',
+              hasResult: true,
+              message,
+              isError
+            },
+            ''
+          );
         } catch (error) {
           resultBox.textContent = 'Error: Unable to evaluate expression.';
           resultBox.classList.add('error');
+          history.pushState(
+            {
+              expression: expressionInput ? expressionInput.value : '',
+              hasResult: true,
+              message: 'Error: Unable to evaluate expression.',
+              isError: true
+            },
+            ''
+          );
         }
 
         resultBox.hidden = false;
