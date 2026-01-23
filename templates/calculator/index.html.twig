@@ -81,19 +81,63 @@
   <div class="shell">
     <h1>RPN Calculator</h1>
     <p>Enter a space-separated Reverse Polish Notation expression.</p>
-    <form method="post">
+    <form method="post" action="/evaluate" id="calculator-form">
       <input type="text" name="expression" placeholder="e.g. 5 1 2 + 4 * + 3 -" value="{{ expression }}" required>
       <button type="submit">Evaluate</button>
     </form>
-    {% if error %}
-      <div class="result error">Error: {{ error }}</div>
-    {% elseif result is not null %}
-      <div class="result">Result: {{ result }}</div>
-    {% endif %}
+    <div class="result" id="calculator-result" hidden></div>
     <div class="examples">
       <p>Operators: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>^</code> <code>!</code> <code>mod</code></p>
       <p>Examples: <code>3 4 +</code>, <code>9 3 /</code>, <code>7 3 mod</code></p>
     </div>
   </div>
+  <script>
+    (function () {
+      const form = document.getElementById('calculator-form');
+      const resultBox = document.getElementById('calculator-result');
+
+      if (!form || !resultBox) {
+        return;
+      }
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        resultBox.hidden = true;
+        resultBox.classList.remove('error');
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Request failed.');
+          }
+
+          const payload = await response.json();
+
+          if (payload.error) {
+            resultBox.textContent = `Error: ${payload.error}`;
+            resultBox.classList.add('error');
+          } else if (payload.result !== null && payload.result !== undefined) {
+            resultBox.textContent = `Result: ${payload.result}`;
+          } else {
+            resultBox.textContent = 'No result returned.';
+          }
+        } catch (error) {
+          resultBox.textContent = 'Error: Unable to evaluate expression.';
+          resultBox.classList.add('error');
+        }
+
+        resultBox.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
