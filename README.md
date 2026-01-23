@@ -18,6 +18,7 @@ make up
 ```
 
 App is served at `http://localhost:8080`.
+Enter a Reverse Polish Notation expression on `/` and submit to evaluate without a page refresh.
 
 To stop containers:
 ```sh
