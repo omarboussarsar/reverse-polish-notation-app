@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RPN Calculator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Fira Mono", "Courier New", monospace;
+      background: radial-gradient(circle at top, #f9f4e8, #f2e3c9 60%, #e7cfa8);
+    }
+    body {
+      margin: 0;
+      padding: 32px 20px 48px;
+      color: #2b2012;
+    }
+    .shell {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff6e4;
+      border: 2px solid #3b2a16;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 6px 10px 0 #3b2a16;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+    p {
+      margin: 0 0 16px;
+      line-height: 1.5;
+    }
+    form {
+      display: grid;
+      gap: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      border: 2px solid #3b2a16;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 16px;
+      background: #fffdf8;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #3b2a16;
+      color: #fff8ea;
+    }
+    .result {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 2px dashed #3b2a16;
+      background: #fffdf8;
+    }
+    .error {
+      color: #7b1f1f;
+      background: #ffe6e6;
+      border-color: #7b1f1f;
+    }
+    .examples {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    code {
+      background: #f2e3c9;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>RPN Calculator</h1>
+    <p>Enter a space-separated Reverse Polish Notation expression.</p>
+    <form method="post">
+      <input type="text" name="expression" placeholder="e.g. 5 1 2 + 4 * + 3 -" value="{{ expression }}" required>
+      <button type="submit">Evaluate</button>
+    </form>
+    {% if error %}
+      <div class="result error">Error: {{ error }}</div>
+    {% elseif result is not null %}
+      <div class="result">Result: {{ result }}</div>
+    {% endif %}
+    <div class="examples">
+      <p>Operators: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>^</code> <code>!</code> <code>mod</code></p>
+      <p>Examples: <code>3 4 +</code>, <code>9 3 /</code>, <code>7 3 mod</code></p>
+    </div>
+  </div>
+</body>
+</html>
