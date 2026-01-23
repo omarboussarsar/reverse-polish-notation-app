@@ -78,4 +78,24 @@ final class ReversePolishNotationTest extends TestCase
 
         self::assertSame(1.0, $service->evaluate('7 3 mod'));
     }
+
+    public function testModuloByZeroThrows(): void
+    {
+        $service = new ReversePolishNotation();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Division by zero.');
+
+        $service->evaluate('7 0 mod');
+    }
+
+    public function testUnknownOperatorThrows(): void
+    {
+        $service = new ReversePolishNotation();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown operator: foo');
+
+        $service->evaluate('1 2 foo');
+    }
 }
