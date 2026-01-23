@@ -9,7 +9,7 @@ Simple Symfony app for evaluating Reverse Polish Notation (RPN) expressions.
 ## Install
 ```sh
 make build
-make composer ARGS=install
+make install
 ```
 
 ## Run
