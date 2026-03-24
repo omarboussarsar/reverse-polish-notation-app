@@ -1,11 +1,11 @@
 # Reverse Polish Notation App
 
-A small Symfony 8 application for evaluating Reverse Polish Notation (RPN) expressions through a web UI and a JSON endpoint.
+A small Symfony 7.4 application for evaluating Reverse Polish Notation (RPN) expressions through a web UI and a JSON endpoint.
 
 ## Stack
 
-- PHP 8.4
-- Symfony 8
+- PHP 8.5
+- Symfony 7.4
 - Nginx
 - Docker Compose
 - PHPUnit via `symfony/phpunit-bridge`
