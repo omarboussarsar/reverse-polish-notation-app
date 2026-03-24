@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "rpn": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "compose",
+        "--project-directory",
+        "${workspaceFolder}",
+        "-f",
+        "${workspaceFolder}/docker-compose.yml",
+        "exec",
+        "-T",
+        "php",
+        "php",
+        "/var/www/html/bin/mcp-server.php"
+      ]
+    }
+  }
+}

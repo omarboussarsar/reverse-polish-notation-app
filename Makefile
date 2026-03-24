@@ -16,6 +16,7 @@ help:
 	@echo "  composer  Run composer, e.g. 'make composer ARGS=install'"
 	@echo "  install   Generate .env.dev secret and install dependencies"
 	@echo "  console   Run bin/console, e.g. 'make console ARGS=cache:clear'"
+	@echo "  mcp       Run the MCP server over stdio in the PHP container"
 	@echo "  test      Run PHPUnit, e.g. 'make test ARGS=--testsuite=unit'"
 
 up:
@@ -42,6 +43,9 @@ install:
 
 console:
 	docker compose exec -T php php bin/console $(ARGS)
+
+mcp:
+	@docker compose exec -T php php bin/mcp-server.php
 
 test:
 	docker compose exec -T php ./vendor/bin/simple-phpunit $(ARGS)
