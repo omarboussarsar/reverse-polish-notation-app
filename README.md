@@ -17,6 +17,7 @@ A small Symfony 7.4 application for evaluating Reverse Polish Notation (RPN) exp
 - MCP server over `stdio` for AI clients
 - Async form submission with no full page reload
 - Supported operators: `+`, `-`, `*`, `/`, `^`, `!`, `mod`
+- Parenthesized grouping support for RPN sub-expressions
 - Error handling for empty input, invalid expressions, unknown operators, division by zero, and integer overflow
 
 ## Requirements
@@ -55,6 +56,7 @@ Example expressions:
 - `2 3 ^`
 - `5 !`
 - `7 3 mod`
+- `( 2 3 + ) 4 *`
 
 `POST /evaluate` accepts an `expression` form field and returns JSON like:
 
@@ -78,7 +80,7 @@ php bin/mcp-server.php
 
 The server exposes one tool:
 
-- `evaluate_rpn`: evaluates a space-separated RPN expression passed as the `expression` argument
+- `evaluate_rpn`: evaluates a space-separated RPN expression passed as the `expression` argument, including grouped sub-expressions like `( 2 3 + ) 4 *`
 
 Example client config:
 
